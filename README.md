@@ -16,6 +16,7 @@ of cloud security posture management (CSPM) — using Infrastructure-as-Code sca
 | [`terraform/secure/main.tf`](./terraform/secure/main.tf) | Remediated version |
 | [`reports/`](./reports) | Checkov scan output (before/after) |
 | [`docs/live-scanning-prowler-scoutsuite.md`](./docs/live-scanning-prowler-scoutsuite.md) | Live-account workflow (Prowler + ScoutSuite, read-only) |
+| [`tools/aws_posture_check.py`](./tools/aws_posture_check.py) | Custom **live** read-only AWS posture checker (boto3) |
 
 ## Exact Setup Commands
 ```powershell
@@ -38,6 +39,21 @@ Checkov **3.3.2**, same controls scanned against both versions:
 S3 public-access-block disabled, no encryption / versioning / logging; Security Group SSH open to
 `0.0.0.0/0`; RDS publicly accessible, unencrypted, hard-coded password. Full output in
 [`reports/`](./reports). Checkov exits non-zero on failures → ready to gate a CI pipeline.
+
+### Live AWS scan (read-only, real account)
+A custom boto3 posture checker (`tools/aws_posture_check.py`), run against a **real AWS account**
+through a read-only `SecurityAudit`/`ViewOnlyAccess` profile, found genuine account-level gaps:
+```
+AWS posture findings (2, risk score 7):
+  [HIGH  ] CIS 3.1 CloudTrail         No CloudTrail trail configured - API activity is not logged
+  [MEDIUM] CIS 1.x Password policy    No IAM account password policy is set
+```
+Root MFA was already enabled, so the checker correctly did **not** flag it — proving the checks
+are accurate, not blanket. Output: [`reports/aws-posture-findings.txt`](./reports/aws-posture-findings.txt).
+
+> Tooling note: ScoutSuite (asyncio) and Prowler (Windows long-path on the `msgraph` dep) both
+> proved unreliable on this Windows + Python 3.12 host, so this custom checker provides the live
+> layer. The documented Prowler/ScoutSuite runbook remains for Linux/CI environments.
 
 ## Screenshots
 See [`./screenshots/`](./screenshots). Add: the two Checkov summary lines (24 vs 4) and a failed

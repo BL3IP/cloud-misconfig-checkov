@@ -1,0 +1,15 @@
+﻿{
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "control": "CIS 1.x Password policy",
+      "message": "No IAM account password policy is set"
+    },
+    {
+      "severity": "HIGH",
+      "control": "CIS 3.1 CloudTrail",
+      "message": "No CloudTrail trail configured - API activity is not logged"
+    }
+  ],
+  "risk_score": 7
+}
