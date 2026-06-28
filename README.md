@@ -1,5 +1,7 @@
 # 11 — Cloud Misconfiguration Hunt (IaC scanning with Checkov)
 
+[![CI](https://github.com/BL3IP/cloud-misconfig-checkov/actions/workflows/ci.yml/badge.svg)](https://github.com/BL3IP/cloud-misconfig-checkov/actions/workflows/ci.yml)
+
 Detect-and-remediate cloud misconfigurations **statically**, before anything is deployed —
 no cloud account required. Deliberately-insecure Terraform is scanned with **Checkov**,
 remediated, and re-scanned to prove the fix. A live Prowler/ScoutSuite workflow is documented
