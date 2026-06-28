@@ -1,0 +1,7 @@
+# Local virtualenv, Python + Terraform state/caches
+.venv/
+__pycache__/
+*.pyc
+.terraform/
+*.tfstate
+*.tfstate.*
